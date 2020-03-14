@@ -1,0 +1,14 @@
+{
+    "require": [
+        "./src/test/mocha.env.ts",
+        "ts-node/register",
+        "source-map-support/register"
+    ],
+    "full-trace": true,
+    "bail": true,
+    "exit": true,
+    "timeout": 2000,
+    "spec": [
+        "./src/test/live/**/*.test.ts"
+    ]
+}

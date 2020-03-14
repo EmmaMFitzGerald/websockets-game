@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015.promise",
+            "es6"
+        ],
+        "watch": false,
+        "module": "commonjs",
+        "target": "es6",
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "node_modules/*"
+            ]
+        },
+        "types": [
+            "node",
+        ],
+        "typeRoots": [
+            "src/@types",
+            "./node-modules/@types"
+        ]
+    },
+    "include": [
+        "**/src/**/*.ts"
+    ]
+}
