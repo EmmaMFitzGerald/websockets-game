@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as socketio from "socket.io";
 import * as path from "path";
+import { tiles } from "./tiles";
 
 const app = express();
 const port = 3000;
@@ -19,9 +20,10 @@ const server = app.listen(port, () =>
 const io = socketio(server);
 
 io.on("connection", socket => {
-    console.log("made connection");
+    console.log(tiles);
+    console.log(socket.id)
 
     socket.emit("message", "welcome to the app");
-})
+});
 
 app.use(express.static("public"));
