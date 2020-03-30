@@ -41,6 +41,8 @@
         "webpack-concat-plugin": "^3.0.0"
     },
     "dependencies": {
-        "express": "^4.17.1"
+        "@types/socket.io": "^2.1.4",
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
     }
 }
