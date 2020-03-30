@@ -10,6 +10,8 @@ app.get("/", (req, res) =>
     res.sendFile(path.resolve("./dist/public/index.html"))
 );
 
+app.use(express.static("dist/public"));
+
 const http = require("http").Server(app);
 
 const server = app.listen(port, () =>
@@ -19,11 +21,8 @@ const server = app.listen(port, () =>
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const io = socketio(server);
 
-io.on("connection", socket => {
-    console.log(tiles);
-    console.log(socket.id)
 
-    socket.emit("message", "welcome to the app");
+io.on("connection", socket => { 
+    console.log("connection  made")
+    socket.emit("initial", tiles);
 });
-
-app.use(express.static("public"));
