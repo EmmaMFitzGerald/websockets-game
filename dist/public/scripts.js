@@ -59,15 +59,11 @@ function buildTiles() {
                 var offset = $(this).offset();
                 var xPos = offset.left;
                 var yPos = offset.top;
-                let id = $(this).data("i"); // (($(this)[0].id).slice(-2))
+                let id = $(this).data("i");
     
                 // console.log(`xPos: ${xPos}, yPos: ${yPos}`);
 
                 socket.emit("drag", { id , myClientId: myClientId, x: xPos, y: yPos })
-              
-                
-
-                // send the message with socket.io as in #7
             }
         });
     }
@@ -82,18 +78,27 @@ function openConnection() {
         const { clientId, tiles } = payload;
 
         myClientId = clientId;
-        console.log(`ClientId is: `, myClientId);
-        console.log("Initial event called, tiles is:", tiles);
+        // console.log(`ClientId is: `, myClientId);
+        // console.log("Initial event called, tiles is:", tiles);
         updateTiles(tiles);
     });
 
     socket.on("updateDraggedTiles", function(payload){
         if (myClientId != payload.myClientId){
-            updateTiles(payload.tiles)
+            updateTile(payload.tile)
         } 
     })
 }
 
+function updateTile(tile){
+    let id = `#tile${tile.id}`;
+    let tileElement = $(id);
+
+    tileElement.css({
+            top: tile.y,
+            left: tile.x
+    })
+}
 
 function updateTiles(tiles) {
     for (tile of tiles) {

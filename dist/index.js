@@ -27,7 +27,7 @@ io.on("connection", socket => {
             tile.y = y;
             console.log("this is the new tile:", tile);
             const updatedTileInfo = {
-                tiles: tiles_1.tiles,
+                tile,
                 myClientId,
             };
             socket.broadcast.emit("updateDraggedTiles", updatedTileInfo);

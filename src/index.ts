@@ -31,7 +31,7 @@ io.on("connection", socket => {
 
     socket.emit("initial", payload);
 
-    socket.on("drag", function(data){
+    socket.on("drag", function(data) {
         const { id, myClientId, x, y } = data;
 
         const tile = tiles.find((t: any) => t.id === id);
@@ -43,7 +43,7 @@ io.on("connection", socket => {
             console.log("this is the new tile:", tile);
 
             const updatedTileInfo = {
-                tiles,
+                tile,
                 myClientId,
             };
             socket.broadcast.emit("updateDraggedTiles", updatedTileInfo);
