@@ -13,7 +13,28 @@ const server = app.listen(port, () => console.log(`Example app listening on port
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const io = socketio(server);
 io.on("connection", socket => {
-    console.log("connection  made");
-    socket.emit("initial", tiles_1.tiles);
+    console.log("connection made from:", socket.id);
+    const payload = {
+        clientId: socket.id,
+        tiles: tiles_1.tiles,
+    };
+    socket.emit("initial", payload);
+    socket.on("drag", function (data) {
+        const { id, myClientId, x, y } = data;
+        const tile = tiles_1.tiles.find((t) => t.id === id);
+        if (tile) {
+            tile.x = x;
+            tile.y = y;
+            console.log("this is the new tile:", tile);
+            const updatedTileInfo = {
+                tiles: tiles_1.tiles,
+                myClientId,
+            };
+            socket.broadcast.emit("updateDraggedTiles", updatedTileInfo);
+        }
+        else {
+            console.warn("Tile not found with id:", id);
+        }
+    });
 });
 //# sourceMappingURL=index.js.map

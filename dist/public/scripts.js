@@ -45,39 +45,75 @@
     8. We don't want to respond to #7 if we are the publisher of the event
 */
 
+let socket; // = io.connect("http://localhost:3000")
+let myClientId;
+
 function buildTiles() {
-    for (var i = 0; i < 100; i++) {
-        let newDiv = $("<div>hello</div>").appendTo("#tiles");
-        newDiv.id = "tile" + i;
+    for (var i = 1; i <= 100; i++) {
+        let newDiv = $("<div>-</div>").appendTo("#tiles");
+        newDiv.addClass("tile");
+        newDiv.attr("id", `tile${i}`);
+        newDiv.data("i", i);
         newDiv.draggable({
             drag: function() {
                 var offset = $(this).offset();
                 var xPos = offset.left;
                 var yPos = offset.top;
+                let id = $(this).data("i"); // (($(this)[0].id).slice(-2))
     
-                console.log(`xPos: ${xPos}, yPos: ${yPos}`);
-    
+                // console.log(`xPos: ${xPos}, yPos: ${yPos}`);
+
+                socket.emit("drag", { id , myClientId: myClientId, x: xPos, y: yPos })
+              
+                
+
                 // send the message with socket.io as in #7
             }
         });
     }
 }
 
-function openConnection() {
-    io.connect("http://localhost:3000")
-}
 
-function updateTiles() {
-    let socket = io.connect("http://localhost:3000")
-    socket.on("initial", function(tiles){
-        console.log(tiles.letter)
+
+function openConnection() {
+    socket = io.connect("http://f12bbcb6.ngrok.io");
+
+    socket.on("initial", function(payload) {
+        const { clientId, tiles } = payload;
+
+        myClientId = clientId;
+        console.log(`ClientId is: `, myClientId);
+        console.log("Initial event called, tiles is:", tiles);
+        updateTiles(tiles);
+    });
+
+    socket.on("updateDraggedTiles", function(payload){
+        if (myClientId != payload.myClientId){
+            updateTiles(payload.tiles)
+        } 
     })
 }
+
+
+function updateTiles(tiles) {
+    for (tile of tiles) {
+        let id = `#tile${tile.id}`;
+        let tileElement = $(id);
+
+        tileElement.text(tile.letter);
+        tileElement.css({
+            top: tile.y,
+            left: tile.x
+        });
+    }
+}
+
+
 
 function initialize() {
     buildTiles();
 
     openConnection();
 
-    updateTiles();
+    // updateTiles();
 }
