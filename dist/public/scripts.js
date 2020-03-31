@@ -72,7 +72,9 @@ function buildTiles() {
 
 
 function openConnection() {
-    socket = io.connect("http://f12bbcb6.ngrok.io");
+    // socket = io.connect("http://f12bbcb6.ngrok.io");
+
+    socket = io.connect("http://localhost:3000/");
 
     socket.on("initial", function(payload) {
         const { clientId, tiles } = payload;
